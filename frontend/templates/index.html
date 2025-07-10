@@ -35,7 +35,6 @@
     <canvas id="scoreChart" width="400" height="200"></canvas>
     <canvas id="typePieChart" width="400" height="200" class="mt-4"></canvas>
 
-    <!-- ✅ Your Chart.js script should be INSIDE body, right before closing -->
     <script>
       const rawResult = {{ result | tojson | safe }};
       if (rawResult && !rawResult.error) {

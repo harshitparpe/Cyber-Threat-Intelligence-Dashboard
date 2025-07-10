@@ -2,10 +2,11 @@ import os
 import requests
 from dotenv import load_dotenv
 
+# Load API key from .env
 load_dotenv()
 
 def query_virustotal(ioc):
-    api_key = os.getenv("f6f342e76abe30004c0a11326608d2b2b2192e770f2c8d4708f701c1f75476fb")
+    api_key = os.getenv("VIRUSTOTAL_API_KEY")  # ✅ Correct way to load API key
     url = f"https://www.virustotal.com/api/v3/search?query={ioc}"
     headers = {"x-apikey": api_key}
     response = requests.get(url, headers=headers)
