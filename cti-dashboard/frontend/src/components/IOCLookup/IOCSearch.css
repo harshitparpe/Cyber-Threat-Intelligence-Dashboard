@@ -1,0 +1,104 @@
+.ioc-lookup-container {
+  padding: 2rem;
+}
+
+.search-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #1e2a3a;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+}
+
+.search-bar button {
+  padding: 0.8rem 1.5rem;
+  background-color: #00d8ff;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00d8ff88;
+}
+
+.loading,
+.error {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.result-card {
+  background-color: #131c2a;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-top: 1rem;
+  color: #fff;
+  box-shadow: 0 0 15px #00d8ff22;
+}
+
+.result-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.copy-btn {
+  background: rgb(0, 200, 255);
+  color: #fff;
+  box-shadow: 0 0 6px rgba(0, 200, 255, 0.5);
+}
+
+.copy-btn:hover {
+  background: #00a4cc;
+}
+
+.export-btn {
+  background: rgb(110, 87, 224);
+  color: #fff;
+  box-shadow: 0 0 6px rgba(110, 87, 224, 0.5);
+}
+
+.export-btn:hover {
+  background: #5842b6;
+}
+
+.history-section {
+  margin-top: 24px;
+  padding: 16px;
+  border-top: 1px solid #444;
+}
+
+.history-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.history-section li {
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.sev.low {
+  color: #2fff95;
+}
+
+.sev.medium {
+  color: #ffbe00;
+}
+
+.sev.high {
+  color: #ff4c4c;
+}

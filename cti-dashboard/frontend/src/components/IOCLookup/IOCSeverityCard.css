@@ -1,0 +1,27 @@
+.ioc-severity-card {
+  padding: 1rem;
+  background-color: #1a2536;
+  border-radius: 10px;
+  color: #fff;
+  box-shadow: 0 0 10px #00d8ff11;
+  margin-bottom: 1rem;
+}
+
+.severity-badge {
+  font-weight: bold;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  color: #fff;
+}
+
+.severity-badge.low {
+  background-color: green;
+}
+
+.severity-badge.medium {
+  background-color: orange;
+}
+
+.severity-badge.high {
+  background-color: red;
+}

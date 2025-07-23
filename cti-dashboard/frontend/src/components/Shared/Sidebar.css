@@ -1,0 +1,37 @@
+.sidebar .logo {
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-bottom: 1px solid #334155;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar nav ul li {
+  border-bottom: 1px solid #334155;
+}
+
+.sidebar nav ul li a {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  text-decoration: none;
+  color: #cbd5e1;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+.sidebar nav ul li a:hover,
+.sidebar nav ul li a.active {
+  background-color: #0ea5e9;
+  color: white;
+}
+
+.sidebar nav ul li a svg {
+  margin-right: 10px;
+}

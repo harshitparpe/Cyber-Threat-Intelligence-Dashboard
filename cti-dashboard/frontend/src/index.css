@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #0f172a;
+  color: white;
+}
+
+.card {
+  background-color: #1e293b;
+  border-radius: 12px;
+  padding: 1rem;
+  color: white;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.35);
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  margin-top: 60px; /* for fixed header */
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar-open .main-content {
+  margin-left: 260px;
+}

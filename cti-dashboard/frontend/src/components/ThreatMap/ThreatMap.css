@@ -1,0 +1,19 @@
+.map-container {
+  height: 80vh;
+  width: 100%;
+  padding: 20px;
+  background-color: #0d1117;
+  color: white;
+  position: relative;
+}
+
+.tooltip {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #222;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  z-index: 10;
+}

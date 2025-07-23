@@ -1,0 +1,56 @@
+body,
+html,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Segoe UI", sans-serif;
+  background-color: #0f172a;
+  color: #fff;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 240px;
+  background-color: #1e293b;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100%;
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 240px;
+  right: 0;
+  height: 60px;
+  background-color: #1e293b;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  z-index: 3;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.page-content {
+  margin-left: 240px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+
+  padding: 20px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  background-color: #0f172a;
+}
