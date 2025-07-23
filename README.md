@@ -37,11 +37,10 @@ CyberX is a full-stack Cyber Threat Intelligence (CTI) dashboard designed to hel
 
 ## 🖼️ UI Screenshots
 
-> Add screenshots here once available:
-- Dashboard
-- IOC Lookup
-- Threat Map
-- Incident Reporting
+- (screenshots/Dashboard.png)
+- (screenshots/IOCLooup.png)
+- (screenshots/ThreatMap.png)
+- (screenshots/Incidents.png)
 
 ---
 
