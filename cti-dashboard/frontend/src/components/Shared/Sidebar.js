@@ -8,8 +8,12 @@ import {
   FaCog,
 } from "react-icons/fa";
 import "./Sidebar.css";
+import { getUserFromToken } from "../../utils/auth";
 
 function Sidebar() {
+  const user = getUserFromToken(); // ✅ MOVE INSIDE
+  const role = user?.role;
+
   return (
     <div className="sidebar">
       <div className="logo">
@@ -32,17 +36,28 @@ function Sidebar() {
               <FaMapMarkedAlt /> Threat Map
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/incidents">
-              <FaBug /> Incidents
-            </NavLink>
-          </li>
+          {role === "analyst" && (
+            <li>
+              <NavLink to="/incidents">
+                <FaBug /> Incident Reporting
+              </NavLink>
+            </li>
+          )}
           <li>
             <NavLink to="/settings">
               <FaCog /> Settings
             </NavLink>
           </li>
         </ul>
+        <button
+          onClick={() => {
+            localStorage.clear();
+            window.location.href = "/login";
+          }}
+          style={{ marginTop: "20px", background: "#dc3545", color: "#fff" }}
+        >
+          🔒 Logout
+        </button>
       </nav>
     </div>
   );

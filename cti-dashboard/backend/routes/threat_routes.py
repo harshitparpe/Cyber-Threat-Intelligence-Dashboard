@@ -1,63 +1,46 @@
-from flask import Blueprint, request, jsonify, current_app
-from models.threat_model import create_threat_doc
-from datetime import datetime
-import random
+# routes/threat_routes.py
+from flask import Blueprint, jsonify, current_app
 
 threat_bp = Blueprint("threats", __name__)
 
-@threat_bp.route("/", methods=["GET"])
-def get_threats():
+@threat_bp.route("/stats", methods=["GET"])
+def get_threat_stats():
     db = current_app.db
-    page = int(request.args.get("page", 1))
-    limit = int(request.args.get("limit", 10))
-    skip = (page - 1) * limit
+    incidents = db.incidents
 
-    threats = list(db.threats.find().sort("timestamp", -1).skip(skip).limit(limit))
-    for threat in threats:
-        threat["_id"] = str(threat["_id"])
-    return jsonify(threats)
+    total = incidents.count_documents({})
+    high = incidents.count_documents({"severity": "High"})
+    medium = incidents.count_documents({"severity": "Medium"})
+    low = incidents.count_documents({"severity": "Low"})
 
-@threat_bp.route("/", methods=["POST"])
-def add_threat():
-    db = current_app.db
-    data = request.json
-    threat_doc = create_threat_doc(data)
-    db.threats.insert_one(threat_doc)
-    return jsonify({"msg": "Threat added successfully"}), 201
+    open_ = incidents.count_documents({"status": "Open"})
+    investigating = incidents.count_documents({"status": "Investigating"})
+    resolved = incidents.count_documents({"status": "Resolved"})
+
+    return jsonify({
+        "total": total,
+        "severity": {
+            "high": high,
+            "medium": medium,
+            "low": low
+        },
+        "status": {
+            "open": open_,
+            "investigating": investigating,
+            "resolved": resolved
+        }
+    })
 
 @threat_bp.route("/feed", methods=["GET"])
 def get_threat_feed():
-    sample_threats = [
-        {
-            "type": "Ransomware Threat",
-            "severity": "HIGH",
-            "country": "Germany",
-            "timestamp": datetime.utcnow().strftime("%I:%M:%S %p")
-        },
-        {
-            "type": "Phishing Threat",
-            "severity": "MEDIUM",
-            "country": "France",
-            "timestamp": datetime.utcnow().strftime("%I:%M:%S %p")
-        },
-        {
-            "type": "Malware Detected",
-            "severity": "LOW",
-            "country": "India",
-            "timestamp": datetime.utcnow().strftime("%I:%M:%S %p")
-        }
-    ]
-
-    # Return 5 shuffled mock entries
-    return jsonify(random.sample(sample_threats * 2, 5))
-
-@threat_bp.route("/map", methods=["GET"])
-def get_threat_map_data():
     db = current_app.db
-    pipeline = [
-        {"$group": {"_id": "$country", "count": {"$sum": 1}}},
-        {"$sort": {"count": -1}}
-    ]
-    result = list(db.threats.aggregate(pipeline))
-    return jsonify(result)
-
+    incidents = db.incidents.find().sort("created_at", -1).limit(10)
+    feed = []
+    for incident in incidents:
+        feed.append({
+            "id": str(incident["_id"]),
+            "title": incident["title"],
+            "severity": incident["severity"],
+            "created_at": incident["created_at"].isoformat(),
+        })
+    return jsonify(feed)

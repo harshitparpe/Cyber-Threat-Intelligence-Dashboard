@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getToken } from "../utils/auth";
 
 const styles = {
   page: {
@@ -62,9 +63,6 @@ const styles = {
     cursor: "pointer",
     transition: "background 0.2s",
   },
-  cardHover: {
-    backgroundColor: "#1d2947",
-  },
   modalOverlay: {
     position: "fixed",
     top: 0,
@@ -101,10 +99,15 @@ const IncidentPage = () => {
 
   const fetchIncidents = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/incidents");
+      const res = await axios.get("http://localhost:5000/api/incidents", {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
       setIncidents(res.data);
     } catch (err) {
       console.error("Failed to fetch incidents", err);
+      toast.error("Failed to load incidents");
     }
   };
 
@@ -123,7 +126,11 @@ const IncidentPage = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await axios.post("http://localhost:5000/api/incidents", formData);
+      await axios.post("http://localhost:5000/api/incidents", formData, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      });
       toast.success("🚀 Incident submitted!");
       fetchIncidents();
       setFormData({
@@ -133,8 +140,8 @@ const IncidentPage = () => {
         status: "Open",
       });
     } catch (err) {
-      toast.error("❌ Failed to submit incident.");
       console.error("Error creating incident", err);
+      toast.error("❌ Failed to submit incident.");
     } finally {
       setSubmitting(false);
     }

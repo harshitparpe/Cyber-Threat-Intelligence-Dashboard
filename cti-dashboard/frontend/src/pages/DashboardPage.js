@@ -1,48 +1,29 @@
-import styled from "styled-components";
+// frontend/src/pages/DashboardPage.js
+import { useEffect, useState } from "react";
+import axios from "axios";
 import ThreatFeed from "../components/Dashboard/ThreatFeed";
-
-const StatCard = styled.div`
-  background: #1e293b;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 238, 255, 0);
-  color: white;
-  width: 220px;
-  text-align: center;
-  transition: 0.2s;
-  &:hover {
-    box-shadow: 0 0 20px rgba(0, 238, 255, 0.3);
-  }
-`;
+import ThreatStats from "../components/Dashboard/ThreatStats";
 
 function DashboardPage() {
+  const [stats, setStats] = useState({});
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/incidents/stats"
+        );
+        setStats(res.data);
+      } catch (err) {
+        console.error("Failed to fetch stats", err);
+      }
+    };
+    fetchStats();
+  }, []);
+
   return (
     <div style={{ padding: "2rem" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-        }}
-      >
-        <StatCard>
-          <h4>Total Threats</h4>
-          <p>145</p>
-        </StatCard>
-        <StatCard>
-          <h4>Active IOCs</h4>
-          <p>27</p>
-        </StatCard>
-        <StatCard>
-          <h4>High-Risk IPs</h4>
-          <p>13</p>
-        </StatCard>
-        <StatCard>
-          <h4>New Today</h4>
-          <p>8</p>
-        </StatCard>
-      </div>
-
+      <ThreatStats stats={stats} />
       <ThreatFeed />
     </div>
   );

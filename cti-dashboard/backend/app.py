@@ -10,8 +10,9 @@ def create_app():
 
     # Enable CORS
     CORS(app)
-    
+
     # JWT setup
+    app.config["JWT_SECRET_KEY"] = "WVZjZ1cTFRfXQIg+MwGoHY44RZSwnQCelJN5FtVkFOFDZAUP09YKK+YUOR0/rMFX"  # replace with os.getenv in production
     jwt = JWTManager(app)
 
     # MongoDB setup
@@ -27,6 +28,13 @@ def create_app():
 
     from routes.incidents import incident_bp
     app.register_blueprint(incident_bp, url_prefix="/api/incidents")
+
+    from routes.auth_routes import auth_bp
+    app.register_blueprint(auth_bp, url_prefix="/api/auth")
+    
+    from routes.threat_stats import threat_stats_bp
+    app.register_blueprint(threat_stats_bp, url_prefix="/api/stats")
+
 
     return app
 
