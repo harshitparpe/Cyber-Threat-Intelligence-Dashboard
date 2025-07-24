@@ -1,0 +1,34 @@
+.threat-feed {
+  margin-top: 2rem;
+  background: #1a233a;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(255, 0, 187, 0);
+  color: white;
+  /* max-width: 800px; */
+}
+
+.feed-item {
+  border-bottom: 1px solid #333;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.feed-item:last-child {
+  border-bottom: none;
+}
+
+.feed-item.low {
+  color: #00ffcc;
+}
+
+.feed-item.medium {
+  color: #ffc107;
+}
+
+.feed-item.high {
+  color: #ff4d4d;
+}

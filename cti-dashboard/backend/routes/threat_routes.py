@@ -1,5 +1,6 @@
 # routes/threat_routes.py
 from flask import Blueprint, jsonify, current_app
+from datetime import datetime
 
 threat_bp = Blueprint("threats", __name__)
 
@@ -33,14 +34,24 @@ def get_threat_stats():
 
 @threat_bp.route("/feed", methods=["GET"])
 def get_threat_feed():
-    db = current_app.db
-    incidents = db.incidents.find().sort("created_at", -1).limit(10)
-    feed = []
-    for incident in incidents:
-        feed.append({
-            "id": str(incident["_id"]),
-            "title": incident["title"],
-            "severity": incident["severity"],
-            "created_at": incident["created_at"].isoformat(),
-        })
-    return jsonify(feed)
+    mock_feed = [
+        {
+            "id": 1,
+            "title": "Suspicious login attempt detected",
+            "severity": "High",
+            "timestamp": datetime.utcnow().isoformat()
+        },
+        {
+            "id": 2,
+            "title": "Multiple failed login attempts",
+            "severity": "Medium",
+            "timestamp": datetime.utcnow().isoformat()
+        },
+        {
+            "id": 3,
+            "title": "Malware signature match",
+            "severity": "Low",
+            "timestamp": datetime.utcnow().isoformat()
+        }
+    ]
+    return jsonify(mock_feed), 200

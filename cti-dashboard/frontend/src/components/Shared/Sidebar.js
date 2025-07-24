@@ -6,6 +6,7 @@ import {
   FaMapMarkedAlt,
   FaBug,
   FaCog,
+  FaShieldAlt,
 } from "react-icons/fa";
 import "./Sidebar.css";
 import { getUserFromToken } from "../../utils/auth";
@@ -44,8 +45,8 @@ function Sidebar() {
             </li>
           )}
           <li>
-            <NavLink to="/settings">
-              <FaCog /> Settings
+            <NavLink to="/mitre">
+              <FaShieldAlt /> MITRE Matrix
             </NavLink>
           </li>
         </ul>

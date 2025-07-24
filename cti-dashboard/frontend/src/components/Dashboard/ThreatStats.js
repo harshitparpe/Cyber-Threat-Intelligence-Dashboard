@@ -5,6 +5,7 @@ import "./ThreatStats.css";
 const ThreatStats = ({ stats = {} }) => {
   return (
     <div className="stats-container">
+      <h2>🧠 Threat Stats</h2>
       {/* Row 1 - Severity */}
       <div className="stats-row">
         <div className="stats-card low">

@@ -1,0 +1,41 @@
+.mitre-container {
+  padding: 2rem;
+  color: white;
+  background-color: #0e1628;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 238, 255, 0.05);
+}
+
+.matrix {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.tactic-box {
+  background: #1e293b;
+  padding: 1rem;
+  border-radius: 8px;
+  width: 250px;
+  box-shadow: 0 0 10px rgba(0, 238, 255, 0.05);
+  transition: 0.2s;
+}
+
+.tactic-box:hover {
+  box-shadow: 0 0 20px rgba(0, 238, 255, 0.2);
+}
+
+.tactic-box h4 {
+  color: #38bdf8;
+  margin-bottom: 0.5rem;
+}
+
+.tactic-box ul {
+  padding-left: 1rem;
+}
+
+.tactic-box li {
+  list-style-type: square;
+  color: #dbeafe;
+}

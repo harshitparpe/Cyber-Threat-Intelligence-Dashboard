@@ -1,11 +1,10 @@
 import React from "react";
-import ThreatMap from "../components/ThreatMap/ThreatMap";
+import ThreatMapChart from "../components/ThreatMap/ThreatMapChart";
 
 const ThreatMapPage = () => {
   return (
-    <div className="page-container">
-      <h2 className="page-title">🌍 Threat Map</h2>
-      <ThreatMap />
+    <div style={{ padding: "2rem" }}>
+      <ThreatMapChart />
     </div>
   );
 };

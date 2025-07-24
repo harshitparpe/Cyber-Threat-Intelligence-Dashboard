@@ -3,10 +3,12 @@ import DashboardPage from "./pages/DashboardPage";
 import LookupPage from "./pages/IocLookupPage";
 import IncidentPage from "./pages/IncidentPage";
 import ThreatMapPage from "./pages/ThreatMapPage";
+import MitrePage from "./pages/MitrePage";
 import Sidebar from "./components/Shared/Sidebar";
 import LoginForm from "./components/Auth/LoginForm";
 import RegisterForm from "./components/Auth/RegisterForm";
 import PrivateRoute from "./components/Auth/PrivateRoute";
+import Footer from "./components/Shared/Footer";
 
 import "./App.css";
 
@@ -57,12 +59,17 @@ function App() {
                 </PrivateRoute>
               }
             />
-            {/* <Route path="/" element={<DashboardPage />} />
-            <Route path="/lookup" element={<LookupPage />} />
-            <Route path="/map" element={<ThreatMapPage />} />
-            <Route path="/incidents" element={<IncidentPage />} /> */}
+            <Route
+              path="/mitre"
+              element={
+                <PrivateRoute>
+                  <MitrePage />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </div>
+        <Footer />
       </div>
     </Router>
   );

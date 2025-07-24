@@ -35,6 +35,8 @@ def create_app():
     from routes.threat_stats import threat_stats_bp
     app.register_blueprint(threat_stats_bp, url_prefix="/api/stats")
 
+    from routes.threat_map import map_bp
+    app.register_blueprint(map_bp, url_prefix="/api/map")
 
     return app
 

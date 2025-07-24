@@ -2,23 +2,22 @@
 .stats-container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .stats-row {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 1rem;
 }
 
 .stats-card {
   background: #1e293b;
-  padding: 1.5rem;
+  padding: 0.5rem;
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(0, 238, 255, 0);
   color: white;
-  width: 220px;
+  width: 30%;
   text-align: center;
   transition: 0.2s;
 }
@@ -27,9 +26,9 @@
   box-shadow: 0 0 20px rgba(0, 238, 255, 0.3);
 }
 
-.stats-card.open,
+/* .stats-card.open,
 .stats-card.investigating,
 .stats-card.resolved {
   flex: 1 1 30%;
   min-width: 180px;
-}
+} */

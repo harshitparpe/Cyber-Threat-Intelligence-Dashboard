@@ -1,8 +1,23 @@
+.sidebar {
+  width: 240px;
+  background: rgba(30, 41, 59, 0.8);
+  backdrop-filter: blur(14px);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100%;
+  z-index: 2;
+  border-right: 1px solid #334155;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+}
+
 .sidebar .logo {
-  padding: 1rem;
+  padding: 1.2rem;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: bold;
+  color: white;
   border-bottom: 1px solid #334155;
 }
 
@@ -22,16 +37,32 @@
   padding: 1rem;
   text-decoration: none;
   color: #cbd5e1;
-  transition: 0.3s;
   font-weight: 500;
+  transition: background 0.3s, color 0.3s;
 }
 
 .sidebar nav ul li a:hover,
 .sidebar nav ul li a.active {
-  background-color: #0ea5e9;
+  background: linear-gradient(78deg, #02a7ff, #0256ff);
   color: white;
 }
 
 .sidebar nav ul li a svg {
   margin-right: 10px;
+}
+
+.sidebar button {
+  margin: 1rem;
+  padding: 10px;
+  background: #f72585;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.sidebar button:hover {
+  background: #c9184a;
 }
