@@ -1,105 +1,87 @@
 import React, { useState, useEffect } from "react";
+import { lookupIOC } from "../../services/iocApi";
+import { saveIocHistory, getIocHistory } from "../../services/iocService";
 import IOCSeverityCard from "./IOCSeverityCard";
-import { saveIocHistory } from "../../services/iocService";
 import "./IOCSearch.css";
 
 const IOCSearch = () => {
-  const [iocInput, setIocInput] = useState("");
-  const [result, setResult] = useState(null);
+  const [ioc, setIoc] = useState("");
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    const stored = localStorage.getItem("ioc_history");
-    if (stored) setHistory(JSON.parse(stored));
+    fetchHistory();
   }, []);
 
-  const handleSearch = async () => {
-    if (!iocInput.trim()) return;
+  const fetchHistory = async () => {
+    const hist = await getIocHistory();
+    setHistory(hist);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setLoading(true);
-    setError(null);
-    setResult(null);
-
+    setError("");
+    setData(null);
     try {
-      await new Promise((res) => setTimeout(res, 1000));
-      const mockResponse = {
-        ioc: iocInput,
-        type: "IP Address",
-        severity: ["LOW", "MEDIUM", "HIGH"][Math.floor(Math.random() * 3)],
-        source: "VirusTotal",
-        last_seen: new Date().toISOString(),
+      const result = await lookupIOC(ioc);
+      setData(result);
+
+      const iocPayload = {
+        ipAddress: result.ipAddress,
+        abuseConfidenceScore: result.abuseConfidenceScore,
+        countryCode: result.countryCode,
+        isp: result.isp,
+        domain: result.domain || "N/A",
+        totalReports: result.totalReports,
+        lastReportedAt: result.lastReportedAt,
+        lookedUpAt: new Date().toISOString(),
       };
-      setResult(mockResponse);
 
-      // Update local history
-      const updatedHistory = [mockResponse, ...history].slice(0, 5);
-      setHistory(updatedHistory);
-      localStorage.setItem("ioc_history", JSON.stringify(updatedHistory));
-
-      // Store to DB
-      await saveIocHistory(mockResponse);
+      console.log("Saving to MongoDB:", iocPayload);
+      await saveIocHistory(iocPayload);
+      fetchHistory(); // refresh
     } catch (err) {
-      setError("Something went wrong while fetching IOC data.");
+      console.error("Error during IOC lookup:", err);
+      setError("Failed to fetch IOC details.");
     } finally {
       setLoading(false);
     }
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(JSON.stringify(result, null, 2));
-  };
-
-  const exportToJSON = () => {
-    const blob = new Blob([JSON.stringify(result, null, 2)], {
-      type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${result.ioc}_ioc_data.json`;
-    a.click();
-  };
-
   return (
-    <div className="ioc-lookup-container">
-      <div className="search-bar">
+    <div className="ioc-lookup-container bg-slate-900 text-white p-4 rounded-xl shadow-xl">
+      <h2 className="text-2xl mb-4">🔍 IOC Lookup</h2>
+      <form onSubmit={handleSubmit} className="search-bar">
         <input
           type="text"
-          placeholder="Enter IP, domain, or hash..."
-          value={iocInput}
-          onChange={(e) => setIocInput(e.target.value)}
+          value={ioc}
+          onChange={(e) => setIoc(e.target.value)}
+          placeholder="Enter IP Address"
         />
-        <button onClick={handleSearch}>Search</button>
-      </div>
+        <button type="submit">Lookup</button>
+      </form>
 
-      {loading && <div className="loading">🔍 Searching...</div>}
-      {error && <div className="error">{error}</div>}
-
-      {result && (
-        <div className="result-card">
-          <IOCSeverityCard iocData={result} />
-          <div className="result-actions">
-            <button className="copy-btn" onClick={copyToClipboard}>
-              📋 Copy
-            </button>
-            <button className="export-btn" onClick={exportToJSON}>
-              💾 Export
-            </button>
-          </div>
-        </div>
-      )}
+      {loading && <p className="loading">Loading...</p>}
+      {error && <p className="error">{error}</p>}
+      {data && <IOCSeverityCard iocData={data} />}
 
       {history.length > 0 && (
-        <div className="history-section">
-          <h4>🕓 Recent History</h4>
+        <div className="history-section mt-6 border-t border-slate-700 pt-4">
+          <h4 className="text-lg font-semibold mb-2">🕓 Recent Lookups</h4>
           <ul>
-            {history.map((entry, idx) => (
-              <li key={idx}>
-                {entry.ioc} —{" "}
-                <span className={`sev ${entry.severity.toLowerCase()}`}>
-                  {entry.severity}
-                </span>
+            {history.map((item) => (
+              <li
+                key={item._id}
+                className="cursor-pointer hover:underline"
+                onClick={() => {
+                  setData(item);
+                  setIoc(item.ipAddress);
+                }}
+              >
+                {item.ipAddress} ({item.lookedUpAt?.split("T")[0]})
               </li>
             ))}
           </ul>

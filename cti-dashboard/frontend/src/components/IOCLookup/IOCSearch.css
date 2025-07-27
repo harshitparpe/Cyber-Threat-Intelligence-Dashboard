@@ -87,8 +87,13 @@
 }
 
 .history-section li {
-  margin-bottom: 6px;
-  font-size: 0.95rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.history-section li:hover {
+  color: #4cc9f0;
+  text-decoration: underline;
 }
 
 .sev.low {

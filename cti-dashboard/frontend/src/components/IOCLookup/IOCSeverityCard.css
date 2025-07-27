@@ -1,27 +1,35 @@
 .ioc-severity-card {
-  padding: 1rem;
+  padding: 1.5rem;
   background-color: #1a2536;
-  border-radius: 10px;
+  border-radius: 12px;
   color: #fff;
-  box-shadow: 0 0 10px #00d8ff11;
-  margin-bottom: 1rem;
+  box-shadow: 0 0 15px #4cc9f022;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.ioc-severity-card:hover {
+  box-shadow: 0 0 20px #4cc9f055;
 }
 
 .severity-badge {
   font-weight: bold;
-  padding: 0.3rem 0.8rem;
+  padding: 0.4rem 1rem;
   border-radius: 20px;
+  font-size: 0.9rem;
   color: #fff;
+  text-shadow: 0 0 2px #000;
 }
 
 .severity-badge.low {
-  background-color: green;
+  background-color: #2fff95; /* green */
 }
 
 .severity-badge.medium {
-  background-color: orange;
+  background-color: #ffbe00; /* yellow */
+  color: #000;
 }
 
 .severity-badge.high {
-  background-color: red;
+  background-color: #ff4c4c; /* red */
 }
