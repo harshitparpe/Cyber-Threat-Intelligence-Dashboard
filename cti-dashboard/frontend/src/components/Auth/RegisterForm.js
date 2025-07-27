@@ -3,7 +3,12 @@ import axios from "axios";
 import "./Auth.css";
 
 const RegisterForm = () => {
-  const [form, setForm] = useState({ email: "", password: "", role: "viewer" });
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+    role: "viewer",
+  });
   const [message, setMessage] = useState("");
 
   const handleChange = (e) =>
@@ -23,6 +28,13 @@ const RegisterForm = () => {
     <div className="auth-form-container">
       <form className="auth-form" onSubmit={handleSubmit}>
         <h2>📝 Register</h2>
+        <input
+          name="username"
+          placeholder="Username"
+          onChange={handleChange}
+          required
+        />
+
         <input name="email" placeholder="Email" onChange={handleChange} />
         <input
           name="password"
@@ -35,7 +47,22 @@ const RegisterForm = () => {
           <option value="analyst">Analyst</option>
         </select>
         <button type="submit">Register</button>
-        {message && <div className="auth-message">{message}</div>}
+        {message && (
+          <div className="auth-message">
+            {message}
+            {message.includes("successful") && (
+              <p className="mt-2 text-sm">
+                👉{" "}
+                <a
+                  href="/login"
+                  style={{ color: "#4cc9f0", textDecoration: "underline" }}
+                >
+                  Go to Login
+                </a>
+              </p>
+            )}
+          </div>
+        )}
       </form>
     </div>
   );

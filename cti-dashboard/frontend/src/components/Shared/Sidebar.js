@@ -5,7 +5,6 @@ import {
   FaSearch,
   FaMapMarkedAlt,
   FaBug,
-  FaCog,
   FaShieldAlt,
 } from "react-icons/fa";
 import "./Sidebar.css";
@@ -50,15 +49,51 @@ function Sidebar() {
             </NavLink>
           </li>
         </ul>
-        <button
-          onClick={() => {
-            localStorage.clear();
-            window.location.href = "/login";
-          }}
-          style={{ marginTop: "20px", background: "#dc3545", color: "#fff" }}
-        >
-          🔒 Logout
-        </button>
+        <div style={{ marginTop: "auto", padding: "1rem" }}>
+          {user ? (
+            <button
+              onClick={() => {
+                localStorage.clear();
+                window.location.href = "/login";
+              }}
+              style={{
+                display: "block",
+                background: "#f72585",
+                color: "white",
+                // padding: "10px 16px",
+                border: "none",
+                borderRadius: "8px",
+                fontWeight: "600",
+                textAlign: "center",
+                textDecoration: "none",
+                fontSize: "15px",
+                width: "100%",
+                height: "40px",
+                cursor: "pointer",
+              }}
+            >
+              🔒 Logout
+            </button>
+          ) : (
+            <NavLink
+              to="/login"
+              style={{
+                display: "block",
+                background: "#4cc9f0",
+                color: "white",
+                padding: "10px 16px",
+                border: "none",
+                borderRadius: "8px",
+                fontWeight: "600",
+                textAlign: "center",
+                textDecoration: "none",
+                cursor: "pointer",
+              }}
+            >
+              🔐 Login
+            </NavLink>
+          )}
+        </div>
       </nav>
     </div>
   );
