@@ -22,13 +22,11 @@
 }
 
 .feed-item.low {
-  color: #00ffcc;
+  color: #00f5d4;
 }
-
 .feed-item.medium {
-  color: #ffc107;
+  color: #ffd60a;
 }
-
 .feed-item.high {
-  color: #ff4d4d;
+  color: #ef233c;
 }

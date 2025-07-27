@@ -38,3 +38,18 @@ def get_all_incidents():
     for i in incidents:
         i["_id"] = str(i["_id"])
     return jsonify(incidents), 200
+
+@incident_bp.route("/stats", methods=["GET"])
+@jwt_required()
+def get_stats():
+    stats = {
+        "low": incidents_col.count_documents({"severity": "Low"}),
+        "medium": incidents_col.count_documents({"severity": "Medium"}),
+        "high": incidents_col.count_documents({"severity": "High"}),
+        "open": incidents_col.count_documents({"status": "Open"}),
+        "investigating": incidents_col.count_documents({"status": "Investigating"}),
+        "resolved": incidents_col.count_documents({"status": "Resolved"}),
+        "total": incidents_col.count_documents({}),
+        "lastReportedAt": incidents_col.find_one(sort=[("created_at", -1)])["created_at"] if incidents_col.count_documents({}) else None
+    }
+    return jsonify(stats), 200

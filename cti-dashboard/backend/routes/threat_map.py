@@ -1,31 +1,17 @@
-from flask import Blueprint, jsonify
-from datetime import datetime
+from flask import Blueprint, jsonify, current_app
+from bson.son import SON
 
 map_bp = Blueprint("map", __name__)
 
-@map_bp.route("/data", methods=["GET"])
-def get_threat_map_data():
-    threats = [
-        {
-            "id": 1,
-            "location": "New York, USA",
-            "coordinates": [-74.006, 40.7128],
-            "severity": "High",
-            "timestamp": datetime.utcnow().isoformat()
-        },
-        {
-            "id": 2,
-            "location": "London, UK",
-            "coordinates": [-0.1276, 51.5072],
-            "severity": "Medium",
-            "timestamp": datetime.utcnow().isoformat()
-        },
-        {
-            "id": 3,
-            "location": "Mumbai, India",
-            "coordinates": [72.8777, 19.076],
-            "severity": "Low",
-            "timestamp": datetime.utcnow().isoformat()
-        }
-    ]
-    return jsonify(threats), 200
+@map_bp.route("/ioc/country-counts", methods=["GET"])
+def get_country_counts():
+    try:
+        pipeline = [
+            {"$group": {"_id": "$countryCode", "count": {"$sum": 1}}},
+            {"$sort": SON([("count", -1)])}
+        ]
+        results = list(current_app.db.ioc_history.aggregate(pipeline))
+        formatted = [{"country": r["_id"], "count": r["count"]} for r in results if r["_id"]]
+        return jsonify(formatted), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

@@ -60,12 +60,9 @@ function Sidebar() {
                 display: "block",
                 background: "#f72585",
                 color: "white",
-                // padding: "10px 16px",
                 border: "none",
                 borderRadius: "8px",
                 fontWeight: "600",
-                textAlign: "center",
-                textDecoration: "none",
                 fontSize: "15px",
                 width: "100%",
                 height: "40px",
@@ -94,6 +91,42 @@ function Sidebar() {
             </NavLink>
           )}
         </div>
+
+        {user && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              padding: "1rem",
+              borderTop: "1px solid #334155",
+              marginTop: "auto",
+              backgroundColor: "#1e293b",
+              borderRadius: "0 0 10px 10px",
+            }}
+          >
+            <img
+              src="https://www.thiings.co/_next/image?url=https%3A%2F%2Flftz25oez4aqbxpq.public.blob.vercel-storage.com%2Fimage-qT0qCttwF0fSi4qeWZj6vo2Za76keg.png&w=1080&q=75"
+              alt="Profile"
+              style={{
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                marginRight: "0.75rem",
+                border: "2px solid #4cc9f0",
+              }}
+            />
+            <div>
+              <div
+                style={{ fontWeight: "bold", color: "white", fontSize: "15px" }}
+              >
+                {user.username}
+              </div>
+              <div style={{ color: "#94a3b8", fontSize: "13px" }}>
+                {user.role === "admin" ? "System Admin" : "Security Analyst"}
+              </div>
+            </div>
+          </div>
+        )}
       </nav>
     </div>
   );

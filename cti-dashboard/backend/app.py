@@ -21,20 +21,22 @@ def create_app():
     from routes.auth_routes import auth_bp
     from routes.ioc_routes import ioc_bp
     from routes.threat_routes import threat_bp
-    from routes.threat_map import map_bp
     from routes.threat_stats import threat_stats_bp
     from routes.ioc_lookup import ioc_lookup_bp
     from routes.ioc_history_routes import ioc_history_bp
     from routes.incident_routes import incident_bp
+    from routes.dashboard_stats import dashboard_bp
+    from routes.threat_map import map_bp
 
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(ioc_bp, url_prefix="/api/ioc")
     app.register_blueprint(threat_bp, url_prefix="/api/threats")
-    app.register_blueprint(map_bp, url_prefix="/api/map")
     app.register_blueprint(threat_stats_bp, url_prefix="/api/stats")
+    app.register_blueprint(map_bp, url_prefix="/api/map")   
     app.register_blueprint(ioc_lookup_bp)
     app.register_blueprint(ioc_history_bp)
     app.register_blueprint(incident_bp, url_prefix="/api/incidents")
+    app.register_blueprint(dashboard_bp)  # No prefix needed since it's already /api/dashboard/stats
 
     return app
 
