@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify, current_app
 
-ioc_bp = Blueprint("ioc_history", __name__)
+ioc_history_bp = Blueprint("ioc_history", __name__)
 
-@ioc_bp.route("/api/ioc-history", methods=["POST"])
+@ioc_history_bp.route("/api/ioc-history", methods=["POST"])
 def add_ioc_history():
     db = current_app.db
     data = request.get_json()
@@ -10,7 +10,7 @@ def add_ioc_history():
     db.ioc_history.insert_one(data)
     return jsonify({"msg": "IOC history saved"}), 201
 
-@ioc_bp.route("/api/ioc-history", methods=["GET"])
+@ioc_history_bp.route("/api/ioc-history", methods=["GET"])
 def get_ioc_history():
     db = current_app.db
     history = list(db.ioc_history.find().sort("lookedUpAt", -1).limit(10))

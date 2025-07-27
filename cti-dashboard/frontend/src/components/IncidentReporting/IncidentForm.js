@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { getToken } from "../../utils/auth";
 
 const IncidentForm = ({ onIncidentCreated }) => {
   const [formData, setFormData] = useState({
@@ -9,16 +10,20 @@ const IncidentForm = ({ onIncidentCreated }) => {
     status: "Open",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post(
         "http://localhost:5000/api/incidents",
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
       );
       onIncidentCreated(res.data);
       setFormData({
@@ -28,26 +33,23 @@ const IncidentForm = ({ onIncidentCreated }) => {
         status: "Open",
       });
     } catch (err) {
-      console.error("Error creating incident", err);
+      console.error("Submission failed", err.response?.data || err.message);
     }
   };
 
   return (
-    <form className="incident-form" onSubmit={handleSubmit}>
-      <h3>Report New Incident</h3>
+    <form onSubmit={handleSubmit}>
+      <h3>Report Incident</h3>
       <input
-        type="text"
         name="title"
         value={formData.title}
         onChange={handleChange}
-        placeholder="Incident Title"
         required
       />
       <textarea
         name="description"
         value={formData.description}
         onChange={handleChange}
-        placeholder="Description"
         required
       />
       <select name="severity" value={formData.severity} onChange={handleChange}>

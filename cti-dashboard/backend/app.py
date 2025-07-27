@@ -1,46 +1,43 @@
 from flask import Flask
-from flask_cors import CORS                      # Handles Cross-Origin Resource Sharing
-from flask_jwt_extended import JWTManager        # JWT auth support
-from pymongo import MongoClient                  # MongoDB client
-from config import Config                        # App config class
+from flask_cors import CORS
+from flask_jwt_extended import JWTManager
+from pymongo import MongoClient
+from config import Config
 
 def create_app():
-    app = Flask(__name__)                        # Create Flask app instance
-    app.config.from_object(Config)               # Load config from Config class
+    app = Flask(__name__)
+    app.config.from_object(Config)
 
-    CORS(app)                                    # Enable CORS for frontend-backend communication
+    CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
-    app.config["JWT_SECRET_KEY"] = "WVZjZ1cTFRfXQIg+MwGoHY44RZSwnQCelJN5FtVkFOFDZAUP09YKK+YUOR0/rMFX"
-    jwt = JWTManager(app)                        # Initialize JWT for auth
+    # Setup JWT
+    jwt = JWTManager(app)
 
-    # mongo = MongoClient("mongodb://localhost:27017/cti_dashboard")  # Connect to MongoDB
-    # app.db = mongo.get_database()                # Attach DB instance to app
-
+    # Connect to MongoDB
     mongo = MongoClient("mongodb://localhost:27017/")
-    app.db = mongo["cti_dashboard"]
+    app.db = mongo.get_database("cti_dashboard")
 
-
-    # Import and register route blueprints
-    from routes.threat_routes import threat_bp
-    from routes.ioc_routes import ioc_bp as ioc_main_bp
-    from routes.incidents import incident_bp
+    # Register Blueprints
     from routes.auth_routes import auth_bp
-    from routes.threat_stats import threat_stats_bp
+    from routes.ioc_routes import ioc_bp
+    from routes.threat_routes import threat_bp
     from routes.threat_map import map_bp
-    from routes.ioc_lookup import ioc_bp as ioc_lookup_bp
-    from routes.ioc_history_routes import ioc_bp as ioc_history_bp
+    from routes.threat_stats import threat_stats_bp
+    from routes.ioc_lookup import ioc_lookup_bp
+    from routes.ioc_history_routes import ioc_history_bp
+    from routes.incident_routes import incident_bp
 
-    app.register_blueprint(threat_bp, url_prefix="/api/threats")       # Threat feed routes
-    app.register_blueprint(ioc_main_bp, url_prefix="/api/ioc")         # IOC routes (basic)
-    app.register_blueprint(incident_bp, url_prefix="/api/incidents")   # Incident reporting
-    app.register_blueprint(auth_bp, url_prefix="/api/auth")            # Auth (login/register)
-    app.register_blueprint(threat_stats_bp, url_prefix="/api/stats")   # Stats for dashboard
-    app.register_blueprint(map_bp, url_prefix="/api/map")              # Threat map routes
-    app.register_blueprint(ioc_lookup_bp)                              # AbuseIPDB IOC lookup
-    app.register_blueprint(ioc_history_bp)                             # Save/fetch IOC history
+    app.register_blueprint(auth_bp, url_prefix="/api/auth")
+    app.register_blueprint(ioc_bp, url_prefix="/api/ioc")
+    app.register_blueprint(threat_bp, url_prefix="/api/threats")
+    app.register_blueprint(map_bp, url_prefix="/api/map")
+    app.register_blueprint(threat_stats_bp, url_prefix="/api/stats")
+    app.register_blueprint(ioc_lookup_bp)
+    app.register_blueprint(ioc_history_bp)
+    app.register_blueprint(incident_bp, url_prefix="/api/incidents")
 
     return app
 
 if __name__ == "__main__":
-    app = create_app()                         # Create app instance
-    app.run(debug=True)                        # Run dev server with debug on
+    app = create_app()
+    app.run(debug=True)

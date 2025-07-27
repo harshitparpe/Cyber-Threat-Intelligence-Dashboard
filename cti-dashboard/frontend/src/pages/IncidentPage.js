@@ -92,7 +92,6 @@ const IncidentPage = () => {
     severity: "Low",
     status: "Open",
   });
-
   const [incidents, setIncidents] = useState([]);
   const [selectedIncident, setSelectedIncident] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -106,8 +105,8 @@ const IncidentPage = () => {
       });
       setIncidents(res.data);
     } catch (err) {
-      console.error("Failed to fetch incidents", err);
-      toast.error("Failed to load incidents");
+      console.error("Fetch error:", err);
+      toast.error("❌ Failed to load incidents");
     }
   };
 
@@ -126,13 +125,17 @@ const IncidentPage = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await axios.post("http://localhost:5000/api/incidents", formData, {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-        },
-      });
+      const res = await axios.post(
+        "http://localhost:5000/api/incidents",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }
+      );
       toast.success("🚀 Incident submitted!");
-      fetchIncidents();
+      setIncidents((prev) => [res.data, ...prev]);
       setFormData({
         title: "",
         description: "",
@@ -140,8 +143,8 @@ const IncidentPage = () => {
         status: "Open",
       });
     } catch (err) {
-      console.error("Error creating incident", err);
-      toast.error("❌ Failed to submit incident.");
+      console.error("Submit error:", err);
+      toast.error("❌ Failed to submit incident");
     } finally {
       setSubmitting(false);
     }
