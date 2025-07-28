@@ -10,11 +10,14 @@ const IncidentForm = ({ onIncidentCreated }) => {
     status: "Open",
   });
 
+  const [error, setError] = useState(null);
+
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     try {
       const res = await axios.post(
         "http://localhost:5000/api/incidents",
@@ -22,6 +25,7 @@ const IncidentForm = ({ onIncidentCreated }) => {
         {
           headers: {
             Authorization: `Bearer ${getToken()}`,
+            "Content-Type": "application/json",
           },
         }
       );
@@ -33,21 +37,25 @@ const IncidentForm = ({ onIncidentCreated }) => {
         status: "Open",
       });
     } catch (err) {
-      console.error("Submission failed", err.response?.data || err.message);
+      setError(err.response?.data?.error || "Failed to submit incident.");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="incident-form">
       <h3>Report Incident</h3>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
       <input
         name="title"
+        placeholder="Incident Title"
         value={formData.title}
         onChange={handleChange}
         required
       />
       <textarea
         name="description"
+        placeholder="Incident Description"
         value={formData.description}
         onChange={handleChange}
         required

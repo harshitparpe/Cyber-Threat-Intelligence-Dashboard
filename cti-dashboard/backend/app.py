@@ -8,16 +8,17 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
+    # Enable CORS
     CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
     # Setup JWT
     jwt = JWTManager(app)
 
-    # Connect to MongoDB
+    # Connect MongoDB and attach to app
     mongo = MongoClient("mongodb://localhost:27017/")
     app.db = mongo.get_database("cti_dashboard")
 
-    # Register Blueprints
+    # Register blueprints (routes)
     from routes.auth_routes import auth_bp
     from routes.ioc_routes import ioc_bp
     from routes.threat_routes import threat_bp
@@ -32,11 +33,11 @@ def create_app():
     app.register_blueprint(ioc_bp, url_prefix="/api/ioc")
     app.register_blueprint(threat_bp, url_prefix="/api/threats")
     app.register_blueprint(threat_stats_bp, url_prefix="/api/stats")
-    app.register_blueprint(map_bp, url_prefix="/api/map")   
+    app.register_blueprint(map_bp, url_prefix="/api/map")
     app.register_blueprint(ioc_lookup_bp)
     app.register_blueprint(ioc_history_bp)
     app.register_blueprint(incident_bp, url_prefix="/api/incidents")
-    app.register_blueprint(dashboard_bp)  # No prefix needed since it's already /api/dashboard/stats
+    app.register_blueprint(dashboard_bp)  # Already prefixed
 
     return app
 

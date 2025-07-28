@@ -1,80 +1,116 @@
-# 🛡️ CyberX - Cyber Threat Intelligence Dashboard
+# 🛡️ Cyber Threat Intelligence (CTI) Dashboard
 
-CyberX is a full-stack Cyber Threat Intelligence (CTI) dashboard designed to help analysts track, investigate, and visualize global cyber threats in real-time. Built with **React** and **Flask**, this tool integrates IOC lookups, threat maps, incident reporting, and MITRE ATT&CK mappings for efficient threat analysis and response.
-
----
+A full-stack dashboard for real-time IOC visualization and secure incident reporting.
 
 ## 🚀 Features
 
-### ✅ IOC Lookup
-
-- Lookup IPs, domains, hashes using mock (or real) threat intelligence APIs
-- Displays **severity with color-coded badges**
-- Supports **copy to clipboard** and **export to JSON**
-- Maintains **local search history**
-
-### 🌍 Threat Map
-
-- Interactive world map using `react-simple-maps`
-- Countries are color-coded by **threat volume**
-- Hover tooltips show **country name + count**
-- Ready for API integration and filtering feed by location
-
-### 📋 Incident Reporting
-
-- Create, view, and manage cybersecurity incidents
-- Fields: title, description, severity, status
-- Shows list of incidents with modal detail view
-- Fully connected to MongoDB
-
-### 🎯 MITRE ATT&CK Mapping
-
-- View mock mappings of threats to tactics and techniques
-- Filter threats by ATT&CK categories (coming soon)
-
-### 🔐 JWT Authentication (Planned)
-
-- User registration & login
-- Role-based access (Analyst, Admin)
-- Protect routes based on roles
+- 🌍 **IOC Threat Map**: Interactive world map colored by country-wise IOC lookup frequency.
+- 📝 **Incident Reporting**: Secure analyst-only incident submission.
+- 📋 **Incident List & Details**: View and inspect all reported incidents in a modal.
+- 📊 **Incident Stats**: Get total incidents, severity breakdown, status breakdown, and last reported time.
+- 🔐 **JWT Auth + Role Control**: Access restricted to authenticated users with the `analyst` role.
 
 ---
 
-## 📸 UI Screenshots
+## 🛠️ Tech Stack
 
-### Dashboard
+### 🔹 Frontend (React.js)
 
-![Dashboard](screenshots/Dashboard.png)
+- React + Axios
+- `react-simple-maps` + `d3-scale` for map visuals
+- Components: `ThreatMap`, `IncidentForm`, `IncidentList`, `IncidentDetailModal`
+- Role-based views and JWT management
 
-### IOC Lookup
+### 🔹 Backend (Flask)
 
-![IOC Lookup](screenshots/IOCLookup.png)
-
-### Threat Map
-
-![Threat Map](screenshots/ThreatMap.png)
-
-### Incident Report
-
-![Incidents](screenshots/Incidents.png)
+- Flask with Blueprints
+- MongoDB using `pymongo`
+- `flask-jwt-extended` for secure authentication
+- Endpoints for incidents, map data, stats
 
 ---
 
-## 🧑‍💻 Tech Stack
+## ⚙️ Setup Instructions
 
-| Frontend          | Backend            | Database    | Tools          |
-| ----------------- | ------------------ | ----------- | -------------- |
-| React             | Flask              | MongoDB     | Axios, JWT     |
-| React Router DOM  | Flask-JWT-Extended | MongoClient | Vercel, Render |
-| React Simple Maps | Flask-CORS         |             | dotenv         |
-
----
-
-## 🛠️ Setup Instructions
-
-### 1. Clone the Repository
+### 🔸 Backend (Flask)
 
 ```bash
-git clone https://github.com/<your-username>/cyberx-dashboard.git
-cd cyberx-dashboard
+pip install flask flask-cors flask-jwt-extended pymongo
+python app.py
 ```
+
+> Make sure MongoDB is running locally on port `27017`.
+
+### 🔸 Frontend (React)
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+---
+
+## 📸 Screenshots
+
+- Login Page
+  ![Login Page](screenshots/LoginPage.png)
+
+- Registeration Page
+  ![Registeration Page](screenshots/RegisterationPage.png)
+
+- Dashboard
+  ![Dashboard](screenshots/Dashboard.png)
+
+- IOC Lookup
+  ![IOC Lookup](screenshots/IOCLookup.png)
+
+- Incidents Reporting
+  ![Incidents Reporting](screenshots/IncidentReporting.png)
+
+- Threat Map
+  ![Threat Map](screenshots/ThreatMap.png)
+
+- MITRE
+  ![MITRE](screenshots/MITRE.png)
+
+---
+
+## 📊 API Endpoints
+
+### 🔐 Auth
+
+- `POST /api/auth/login`
+- `POST /api/auth/register`
+
+### 📍 Incidents
+
+- `POST /api/incidents/` – Create new incident (analyst only)
+- `GET /api/incidents/` – Fetch all incidents
+- `GET /api/incidents/stats` – Get severity/status stats
+
+### 🌐 Map
+
+- `GET /api/map/ioc/country-counts` – Get IOC count by country
+
+---
+
+## 🧠 Notes
+
+- JWT is stored in `localStorage` (`getToken()` in `/utils/auth.js`)
+- Country code issues are resolved via ISO3→ISO2 conversion
+- The frontend filters and displays map & incident data live
+- Extendable: role-based editing, export to CSV, filters
+
+---
+
+## 👤 Author
+
+- **Harshit Parpe**  
+  Full-stack developer & cybersecurity enthusiast
+
+---
+
+## 📄 License
+
+MIT License
